@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <style>
+    .ms1 {
+      padding-bottom: 34px;
+
+    }
+
+    .ms2b {
+      height: 10px;
+      width: 160px;
+      background-color: #98c8cc;
+      padding: 5px;
+      font-family: 'Titillium Web', sans-serif;
+      color: white;
+      font-weight: bold;
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      text-align: right;
+      Border-radius: 20px 0px 0px 0px;
+    }
+
+    .ms2r {
+      height: 10px;
+      width: 160px;
+      background-color: #eab9b0;
+      padding: 5px;
+      font-family: 'Titillium Web', sans-serif;
+      color: white;
+      font-weight: bold;
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      text-align: right;
+      Border-radius: 20px 0px 0px 0px;
+    }
+
+    .ms3 {
+      height: 50px;
+      width: 50px;
+      background-color: #536872;
+      float: left;
+      filter: grayscale(40%);
+      background-size: cover;
+      background-position: center;
+    }
+
+    .ms4 {
+      height: 10px;
+      width: 110px;
+      background-color: #eee;
+      font-family: 'Titillium Web', sans-serif;
+      color: #708090;
+      font-weight: bold;
+      font-size: 8px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      text-align: center;
+      padding: 5px;
+    }
+
+    .ms5 {
+      height: 30px;
+      width: 120px;
+      margin-left: -3px;
+      margin-top: -5px;
+    }
+
+    .ms6 {
+      height: 25px;
+      width: 25px;
+      background-color: #708090;
+      overflow: hidden;
+      filter: grayscale(40%);
+      background-size: cover;
+      background-position: center;
+    }
+
+    .ms7 {
+      background-color: white;
+      border: .5px black solid;
+      height: 7.5px;
+      width: 2px;
+    }
+
+    .ms8 {
+      padding: 5px;
+      height: 350px;
+      width: 150px;
+      color: var(--font-color);
+    }
+
+    .ms9 {
+      padding: 5px;
+      border-bottom: 1px black solid;
+      font-size: 9px;
+      text-align: left;
+      color: var(--font-color);
+      font-family: 'Titillium Web', sans-serif;
+    }
+
+    .ms10 {
+      padding: 5px;
+      border-bottom: 1px black solid;
+      font-size: 9px;
+      text-align: right;
+      color: var(--font-color);
+      font-family: 'Titillium Web', sans-serif;
+    }
+
+    .ms11 {
+      font-family: 'Oswald', sans-serif;
+      text-align: center;
+      font-size: 25px;
+      text-transform: uppercase;
+	color: var(--font-color);
+    }
+
+     .ms12 {
+ 	 padding: 5px;
+  	border-left: 1px black solid;
+  	border-right: 1px black solid;
+  	font-size: 12px;
+  	text-align: center;
+  	color: var(--font-color);
+  	font-family: 'Titillium Web', sans-serif;
+}
+    .ms {
+      margin: auto;
+      background-color: var(--primary-color);
+      border: solid 1px black;
+      width: 520px;
+      margin-bottom: 10px;
+      margin-top: 10px;
+    }
+
+    #bar1 {
+      display: block;
+      background-color: #0099CC;
+      width: 50%;
+      height: 5px;
+
+    }
+
+    #bar2 {
+      display: block;
+      background-color: #0099CC;
+      width: 50%;
+      height: 5px;
+
+    }
+
+    #bar3 {
+      display: block;
+      background-color: #0099CC;
+      width: 50%;
+      height: 5px;
+
+    }
+
+    #bar4 {
+      display: block;
+      background-color: #0099CC;
+      width: 50%;
+      height: 5px;
+
+    }
+
+    #bar5 {
+      display: block;
+      background-color: #0099CC;
+      width: 50%;
+      height: 5px;
+
+    }
+
+    #bar6 {
+      display: block;
+      background-color: #0099CC;
+      width: 50%;
+      height: 5px;
+
+    }
+
+    #bar7 {
+      display: block;
+      background-color: #0099CC;
+      width: 50%;
+      height: 5px;
+
+    }
+
+    #bar8 {
+      display: block;
+      background-color: #0099CC;
+      width: 50%;
+      height: 5px;
+
+    }
+
+    #bar9 {
+      display: block;
+      background-color: #0099CC;
+      width: 50%;
+      height: 5px;
+
+    }
+
+    #bar10 {
+      display: block;
+      background-color: #0099CC;
+      width: 50%;
+      height: 5px;
+
+    }
+  </style>
+  <style>
+    .loader {
+      border: 5px solid #ffffff;
+      border-radius: 50%;
+      border-top: 5px solid #4f595f;
+      width: 25px;
+      height: 25px;
+      -webkit-animation: spin 2s linear infinite;
+      /* Safari */
+      animation: spin 2s linear infinite;
+    }
+
+    /* Safari */
+    @-webkit-keyframes spin {
+      0% {
+        -webkit-transform: rotate(0deg);
+      }
+
+      100% {
+        -webkit-transform: rotate(360deg);
+      }
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Titillium+Web&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/a836ff937f.js" crossorigin="anonymous"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.11.3/jquery-ui.js"
+    integrity="sha256-0vBSIAi/8FxkNOSKyPEfdGQzFDak1dlqFKBYqBp1yC4=" crossorigin="anonymous">
+    </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+  <link href="{{ url_for('static',filename='styles/style.css') }}" rel="stylesheet">
+  <script>
+    function switchTheme(e) {
+      if (e.target.checked) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+      }
+      else {
+        document.documentElement.setAttribute('data-theme', 'light');
+        localStorage.setItem('theme', 'light');
+      }
+    }
+
+
+
+    //Get the button
+    function toggleBtnClick() {
+      $("#playerval").focus();
+      if ($('#matchbtn').text() == "Match") {
+        $("#matchbtn").text("Player");
+      }
+      else {
+        $("#matchbtn").text("Match");
+      }
+
+    }
+    // When the user clicks on the button, scroll to the top of the document
+    function topFunction() {
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
+    }
+
+    function get_history() {
+      var player_name = $("#playerval").val();
+      if (player_name != "") {
+        $(".recentmatch").fadeOut();
+        $(".tables").fadeOut();
+        $(".loader").fadeIn();
+        call_url = window.location.href + "/player?recentmatches=" + player_name;
+        $.getJSON(call_url, function (data) {
+          var vals = Object.keys(data);
+          let k1 = vals[0]
+          if (data[k1][0].status == 1) {
+            var matches_table = "";
+            console.log(vals);
+            vals.forEach(function (match) {
+              matches_table += "<div class=\"ms\"><table><tr><td>";
+              data[match].forEach(function (player) {
+                if (player.TaskForce == '1') {
+                  matches_table += "<div class=\"ms1\"><div class=\"ms2b\">" + player.playerName;
+                  matches_table += "</div><div class=\"ms3\" title=\"" + player.Reference_Name + "\" style=\"background-image: url(static/" + player.champ_img + ")\">";
+                  matches_table += "</div><div style=\'float: right;\'><table><tr><div class=\"ms4\">";
+                  matches_table += "K " + player.Kills_Player + " | D " + player.Deaths + " | A " + player.Assists;
+                  matches_table += `</div>
+                  </tr><td>
+                    <div class=\"ms5\">
+                  <table><td><div class=\"ms6\"`;
+
+                  matches_table += " style = \"background-image: url(static/" + player.item1_img + ");\">";
+                  for (i = 0; i < player['ActiveLevel1']; i++) {
+                    matches_table += "<div class=\"ms7\"></div>";
+                  }
+                  matches_table += "</div> </td>";
+                  matches_table += "<td><div class=\"ms6\" style = \"background-image: url(static/" + player.item2_img + ");\">";
+                  for (i = 0; i < player['ActiveLevel2']; i++) {
+                    matches_table += "<div class=\"ms7\"></div>";
+                  }
+                  matches_table += "</div></td><td><div class=\"ms6\" style = \"background-image: url(static/" + player.item3_img + ");\">";
+                  for (i = 0; i < player['ActiveLevel3']; i++) {
+                    matches_table += "<div class=\"ms7\"></div>";
+                  }
+                  matches_table += "</div></td><td><div class=\"ms6\" style = \"background-image: url(static/" + player.item4_img + ");\">";
+                  for (i = 0; i < player['ActiveLevel4']; i++) {
+                    matches_table += "<div class=\"ms7\"></div>";
+                  }
+                  matches_table += `
+                  </div></td></table>
+                  </div>
+                  </td></table></div></div>
+                  </div>
+                  <br>`;
+
+                }
+              });
+              matches_table += "</td><td>";
+              matches_table += "<div class=\"ms8\"><div class=\"ms12\">" + data[match][0].Entry_Datetime + "</div><br><div class=\"ms9\">match type</div><br>";
+              matches_table += "<div class=\"ms11\">" + data[match][0]['match_type'] + "</div>";
+              matches_table += `
+                  <div class=\"ms10\">score</div><br>`;
+              matches_table += "<div class=\"ms11\">" + data[match][0]['Team1Score'].toString() + "-" + data[match][0]['Team2Score'].toString() + "</div><div class=\"ms9\">map name</div><br>";
+              matches_table += "<div class=\"ms11\">" + data[match][0]['map_name'] + "</div></div></td><td>";
+              data[match].forEach(function (player) {
+                if (player.TaskForce == '2') {
+                  matches_table += "<div class=\"ms1\"><div class=\"ms2r\">" + player.playerName;
+                  matches_table += "</div><div class=\"ms3\" title=\"" + player.Reference_Name + "\" style=\"background-image: url(static/" + player.champ_img + ")\">";
+                  matches_table += "</div><div style=\'float: right;\'><table><tr><div class=\"ms4\">";
+                  matches_table += "K " + player.Kills_Player + " | D " + player.Deaths + " | A " + player.Assists;
+                  matches_table += `</div>
+                  </tr><td>
+                    <div class=\"ms5\">
+                  <table><td><div class=\"ms6\"`;
+
+                  matches_table += " style = \"background-image: url(static/" + player.item1_img + ");\">";
+                  for (i = 0; i < player['ActiveLevel1']; i++) {
+                    matches_table += "<div class=\"ms7\"></div>";
+                  }
+                  matches_table += "</div> </td>";
+                  matches_table += "<td><div class=\"ms6\" style = \"background-image: url(static/" + player.item2_img + ");\">";
+                  for (i = 0; i < player['ActiveLevel2']; i++) {
+                    matches_table += "<div class=\"ms7\"></div>";
+                  }
+                  matches_table += "</div></td><td><div class=\"ms6\" style = \"background-image: url(static/" + player.item3_img + ");\">";
+                  for (i = 0; i < player['ActiveLevel3']; i++) {
+                    matches_table += "<div class=\"ms7\"></div>";
+                  }
+                  matches_table += "</div></td><td><div class=\"ms6\" style = \"background-image: url(static/" + player.item4_img + ");\">";
+                  for (i = 0; i < player['ActiveLevel4']; i++) {
+                    matches_table += "<div class=\"ms7\"></div>";
+                  }
+                  matches_table += `
+                  </div></td></table>
+                  </div>
+                  </td></table></div></div>
+                  </div>
+                  <br>`;
+
+                }
+              });
+              matches_table += "</td></tr></table></div></div>";
+            });
+
+            $(".recentmatch").html(matches_table);
+            $(".loader").fadeOut();
+            $(".recentmatch").show("slide", { direction: "down" });
+          }
+
+          else {
+            $(".loader").fadeOut();
+            $('#error_msg').fadeIn();
+            $('#error_msg').html(data.error_msg);
+            setTimeout(function () {
+              $('#error_msg').fadeOut();
+            }, 3000);
+          }
+        });
+
+      }
+
+    }
+
+
+    function make_table() {
+
+      //$("#tableDiv2").fadeOut();
+      var player_name = $("#playerval").val();
+
+      call_url = window.location.href + "/live?livematch=" + player_name;
+      if (player_name != "") {
+        let barcolors_One = [];
+        let winrates_One = [];
+        let barcolors_Two = [];
+        let winrates_Two = [];
+        $(".tables").fadeOut();
+        $(".recentmatch").fadeOut();
+        $.getJSON(call_url, function (data) {
+          //var game_info = data;
+          if (data.status == 3) {
+            $(".loader").fadeIn();
+            var table_body = "";
+            let i = 1
+            data.teamOne.forEach(function (item) {
+              var bar_length = item.winrate;
+              var bar_color = "green";
+              var wr_int = parseInt(item.winrate);
+              table_body += '<table cellpadding=\"2\"; style=\"line-height: 90%; margin-bottom: 10px; border: 1px solid #dbdada; background-color: var(--bg-color); padding: 10px; width: 100%;\">';
+              table_body += "<tr>";
+              table_body += "<td> <div id=\"chmpicr\" title=\"" + item.championName + "\">";
+              table_body += "<img src=\"static/" + item.champ_img + "\">";
+              table_body += "</div></td>";
+              table_body += "<td><div id=\"plyrnamebxr\"><div id=\"plyrnamr\">";
+              table_body += item.playerName;
+              table_body += "</div></div></td>";
+              table_body += "<td> <div id=\"rnk\" title=\"" + item.rankName + "\"><img src = \"static/" + item.rank + "\">";
+              table_body += "</div></td>";
+              table_body += "<td><div id=\"wrbx\" title=\"winrate\">" + item.winrate + "<div id = \"brbr\"><div id = \"bar" + i.toString() + "\">" + "</div></div></div></td>";
+              i += 1;
+              table_body += "</tr></table>";
+              if (wr_int <= 45) {
+                bar_color = "#FF3333";
+              } else if (wr_int > 45 && wr_int < 50) {
+                bar_color = "#AA5566";
+              } else if (wr_int >= 50 && wr_int <= 60) {
+                bar_color = "#557799";
+              } else {
+                bar_color = "#0099CC";
+              }
+              let new_color = barcolors_One.push(bar_color);
+              let new_wr = winrates_One.push(item.winrate);
+
+            });
+            table_body += '</table>';
+            var table_body2 = "";
+
+            let j = 6;
+            data.teamTwo.forEach(function (item2) {
+              var bar_length2 = item2.winrate;
+              var bar_color2 = "green";
+              var wr_int2 = parseInt(item2.winrate);
+              table_body2 += '<table cellpadding=\"2\"; style=\"line-height: 90%; margin-bottom: 10px; border: 1px solid #dbdada; background-color: var(--bg-color); padding: 10px; width: 100%;\">'
+              table_body2 += "<tr>";
+              table_body2 += "<td> <div id=\"chmpicr\" title=\"" + item2.championName + "\">";
+              table_body2 += "<img src=\"static/" + item2.champ_img + "\">";
+              table_body2 += "</div></td>";
+              table_body2 += "<td><div id=\"plyrnamebx\"><div id=\"plyrnam\">";
+              table_body2 += item2.playerName;
+              table_body2 += "</div></div></td>";
+              table_body2 += "<td> <div id=\"rnk\" title=\"" + item2.rankName + "\"><img src = \"static/" + item2.rank + "\">";
+              table_body2 += "</div></td>";
+              table_body2 += "<td><div id=\"wrbx\" title=\"winrate\">" + item2.winrate + "<div id = \"brbr\"><div id = \"bar" + j.toString() + "\">" + "</div></div></div></td>";
+              j += 1;
+              table_body2 += "</tr></table>";
+              if (wr_int2 <= 45) {
+                bar_color2 = "#FF3333";
+              } else if (wr_int2 > 45 && wr_int2 < 50) {
+                bar_color2 = "#AA5566";
+              } else if (wr_int2 >= 50 && wr_int2 <= 60) {
+                bar_color2 = "#557799";
+              } else {
+                bar_color2 = "#0099CC";
+              }
+              let new_color = barcolors_Two.push(bar_color2);
+              let new_wr = winrates_Two.push(item2.winrate);
+            });
+            table_body2 += '</table>';
+            $(".loader").fadeOut();
+            $('#tableDiv').html(table_body);
+
+
+            $('#tableDiv2').html(table_body2);
+            $("#bar1").css({ "display": "block", "background-color": barcolors_One[0], "width": winrates_One[0], "height": "5px" });
+            $("#bar2").css({ "display": "block", "background-color": barcolors_One[1], "width": winrates_One[1], "height": "5px" });
+            $("#bar3").css({ "display": "block", "background-color": barcolors_One[2], "width": winrates_One[2], "height": "5px" });
+            $("#bar4").css({ "display": "block", "background-color": barcolors_One[3], "width": winrates_One[3], "height": "5px" });
+            $("#bar5").css({ "display": "block", "background-color": barcolors_One[4], "width": winrates_One[4], "height": "5px" });
+            $("#bar6").css({ "display": "block", "background-color": barcolors_Two[0], "width": winrates_Two[0], "height": "5px" });
+            $("#bar7").css({ "display": "block", "background-color": barcolors_Two[1], "width": winrates_Two[1], "height": "5px" });
+            $("#bar8").css({ "display": "block", "background-color": barcolors_Two[2], "width": winrates_Two[2], "height": "5px" });
+            $("#bar9").css({ "display": "block", "background-color": barcolors_Two[3], "width": winrates_Two[3], "height": "5px" });
+            $("#bar10").css({ "display": "block", "background-color": barcolors_Two[4], "width": winrates_Two[4], "height": "5px" });
+
+            $(".tables").show("slide", { direction: "down" });
+          }
+
+
+
+          else {
+            $('#error_msg').fadeIn();
+            $('#error_msg').html(data.error_msg);
+            setTimeout(function () {
+              $('#error_msg').fadeOut();
+            }, 3000);
+
+          }
+
+        });
+      }
+    }
+
+    $(document).ready(function () {
+      var mybutton = document.getElementById("myBtn");
+      $("#playerbtn").hide();
+      // When the user scrolls down 20px from the top of the document, show the button
+      window.onscroll = function () { scrollFunction() };
+
+      function scrollFunction() {
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+          mybutton.style.display = "block";
+        } else {
+          mybutton.style.display = "none";
+        }
+      }
+
+      $("#error_msg").hide();
+      const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
+      toggleSwitch.addEventListener('change', switchTheme, false);
+      $('.srcbrsr').on("keypress", function (e) {
+        if (e.keyCode == 13) {
+          if ($("#matchbtn").text() == "Match") {
+            make_table();
+          }
+          else {
+            get_history();
+          }
+        }
+      });
+      const currentTheme = localStorage.getItem('theme');
+
+      if (currentTheme) {
+        document.documentElement.setAttribute('data-theme', currentTheme);
+
+        if (currentTheme === 'dark') {
+          toggleSwitch.checked = true;
+        }
+      }
+    }
+    );
+
+  </script>
+</head>
+
+<body>
+  <button onclick="topFunction()" id="myBtn" title="Go to top"><i class="fas fa-sort-up"></i></button>
+
+  <div class="maintit"><img src="https://i.ibb.co/8K0vQDP/paladeenzlog.png">
+    <h1>Paladeenz</h1><br>
+    <em>paladins statistics and livematch database</em>
+    <div style="position:relative; left:945px; top:338px;">
+      <div class="loader" style="display:none;"></div>
+    </div>
+  </div>
+  <ul>
+    <li><a href="#" onclick="load_home();">Home</a></li>
+    <li><a href="{{ url_for('about') }}" title="">About</a></li>
+    <li><a href="#contact" title="feature unavailable">News*</a></li>
+    <li><a href="{{ url_for('admin') }}" title="">Admin</a></li>
+    <li style="float:right"><a class="active" href="https://discord.gg/t325G2u"><i class="fab fa-discord"></i></a></li>
+  </ul>
+  <div class='srcbrsr'>
+    <table>
+      <tr>
+        <td><input type="text" autocomplete="off" spellcheck="false" class="fname" name="firstname" id="playerval"
+            placeholder="Enter a player name">
+        </td>
+        <td><button id="matchbtn" style="display:inline-block;" onclick="toggleBtnClick();">Match</button></td>
+        <td>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div class="theme-switch-wrapper">
+    <label class="theme-switch" for="checkbox">
+      <input type="checkbox" id="checkbox" />
+      <div class="slider round"></div>
+    </label>
+  </div>
+  <div id="error_msg"></div>
+  <div class="recentmatch" , style="display:none;"></div>
+  <div class="tables" , style="display:none;">
+    <div style="margin-top: 10px; display: flex; justify-content: center;">
+      <table style="border: 0px solid rgba(0, 0, 0, 0.5);">
+        <tr>
+          <td>
+            <div class="redtm">
+              <div id="tableDiv" , style="display: inline-block"></div>
+            </div>
+          </td>
+
+          <td>
+            <div class="bluetm">
+              <div id="tableDiv2" , style="display:inline-block"></div>
+            </div>
+          </td>
+        </tr>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+</body>
+
+</html>
