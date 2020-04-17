@@ -185,6 +185,8 @@ def get_recent_matches(s, player_id):
         match['item2_img'] = parse_item(match["Item_Active_2"])
         match['item3_img'] = parse_item(match["Item_Active_3"])
         match['item4_img'] = parse_item(match["Item_Active_4"])
+        if match["playerName"] == "":
+            match["playerName"] = '[PRIVATE PROFILE]'
         if match['Match'] not in all_match_array.keys():
             all_match_array[match['Match']] = []
         match['status'] = 1
