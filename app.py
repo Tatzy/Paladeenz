@@ -200,15 +200,60 @@ def livematch():
 @limiter.exempt
 def test():
     s = api.api.PaladinsSession(dev_id,dev_key)
-    player_name = request.args['player']
-    player_id_json = s._make_request("getplayeridbyname", [player_name])
-    if player_id_json == []:
-        pass
-    else:
-        player_id = player_id_json[0]['player_id']
-        #return jsonify(s._make_request('getqueuestats', [player_id,'486']))
-        #return jsonify(s._make_request('getchampions', ['1']))
-        return jsonify(s._make_request('getchampionleaderboard', ['2314','486']))
+    a = s._make_request("getmatchidsbyqueue", ["486","20200418","2,30"])
+    #print(a)
+    return jsonify(a)
+
+@app.route("/matchfeed", methods=['GET'])
+@limiter.exempt
+def matchfeed():
+    s = api.api.PaladinsSession(dev_id,dev_key)
+    utc = arrow.utcnow()
+    #local = utc.to('US/Eastern')
+    date = utc.format('YYYYMMDD')
+    match_return_list = []
+    time = utc
+    time = time.format('H,mm')
+    time = time.split(",")[0] + "," + str((int(time.split(",")[1]) - (int(time.split(",")[1])%10))%60)
+    print(time)
+    all_matches = s._make_request("getmatchidsbyqueue", ["486",str(date),"-1"])
+    all_matches = all_matches[::-1] 
+    if all_matches != []:
+        matches_length = min(len(all_matches),30)
+        #print(matches_length)
+        id_string = ""
+        match_details = {}
+        for i in range(0, matches_length):
+            if i % 10 == 9:
+                id_string += all_matches[i]['Match']
+                #print(id_string)
+                batch_results = s._make_request("getmatchdetailsbatch", [id_string])
+                for item in batch_results:
+                    if item['Match'] not in match_details.keys():
+                        match_details[item['Match']] = []
+                    match_details[item['Match']].append(item)
+                id_string=""
+            else:
+                id_string += all_matches[i]['Match'] + ","
+        match_return_list = []
+        for match in match_details:
+            avg_rank = 0
+            for i in range(0,len(match_details[match])):
+                avg_rank += match_details[match][i]['League_Tier']
+                entry_time = match_details[match][i]['Entry_Datetime']
+                region = match_details[match][i]['Region']
+            avg_rank = int(avg_rank/10)
+            #print(entry_time)
+            #arrowtime = arrow.get('04/18/2020 03:29:12', 'MM/DD/YYYY HH:mm:ss')
+            arrowtime = arrow.get(str(entry_time), 'M/DD/YYYY h:mm:ss A')
+            #print(arrowtime.format("HH:mm"))
+            k = utc - arrowtime
+            if region == "Latin America North":
+                region = "LAN"
+            match_return_list.append({"region":region ,"average_rank_img" : of.parse_rank(avg_rank), "average_rank" : of.parse_rank_name(avg_rank), "time":str((k.seconds//60)%60)+ " minutes ago...", "avg_rank" : avg_rank})
+    #print(match_return_list)
+    return render_template("matchfeed.html", data = json.dumps(match_return_list))
+
 
 @app.route("/analysis", methods=['GET'])
 @limiter.exempt
