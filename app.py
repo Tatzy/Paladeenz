@@ -45,10 +45,11 @@ login_manager = LoginManager(app)
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 migrate = Migrate(app, db)
-COOKIE_DURATION = timedelta(days=365)
+COOKIE_DURATION = timedelta(hours = 4)
 
 LIVEMATCH_RATE_LIMIT = "15/hr"
 RECENTMATCHES_RATE_LIMIT = "5/hr"
+MATCHFEED_LIMIT = "10/hr"
 
 @app.before_request
 def make_session_permanent():
@@ -94,6 +95,12 @@ def login():
         if user is None or not user.check_password(form.password.data):
             flash('Invalid username or password')
             return redirect(url_for('login'))
+        utc = arrow.utcnow()
+        local = utc.to('US/Eastern')
+        dt_string = local.format('MM/DD/YYYY HH:mm')
+        f = open("searches.log", 'a')
+        f.write("LOGIN," + dt_string + "," + user.username +"\n")
+        f.close()
         login_user(user)
         next_page = request.args.get('next')
         if not next_page or url_parse(next_page).netloc != '':
@@ -199,12 +206,12 @@ def livematch():
 @app.route("/test", methods=['GET'])
 @limiter.exempt
 def test():
-    s = api.api.PaladinsSession(dev_id,dev_key)
-    a = s._make_request("getmatchidsbyqueue", ["486","20200418","2,30"])
-    #print(a)
-    return jsonify(a)
+    global MATCHFEED_LIMIT
+    MATCHFEED_LIMIT = "0/hour"
+    return ""
 
 @app.route("/matchfeed", methods=['GET'])
+@limiter.limit(MATCHFEED_LIMIT)
 @limiter.exempt
 def matchfeed():
     s = api.api.PaladinsSession(dev_id,dev_key)
@@ -252,6 +259,11 @@ def matchfeed():
                 region = "LAN"
             match_return_list.append({"region":region ,"average_rank_img" : of.parse_rank(avg_rank), "average_rank" : of.parse_rank_name(avg_rank), "time":str((k.seconds//60)%60)+ " minutes ago...", "avg_rank" : avg_rank})
     #print(match_return_list)
+    utc = arrow.utcnow()
+    local = utc.to('US/Eastern')
+    dt_string = local.format('MM/DD/YYYY HH:mm')
+    f = open("searches.log", 'a')
+    f.write("MATCHFEED," + dt_string + "," + "ALL" +"\n")
     return render_template("matchfeed.html", data = json.dumps(match_return_list))
 
 
