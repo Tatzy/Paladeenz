@@ -84,6 +84,37 @@
         top: 1px;
         outline: 0;
       }
+      .loader {
+        border: 5px solid #ffffff;
+        border-radius: 50%;
+        border-top: 5px solid #4f595f;
+        width: 25px;
+        height: 25px;
+        -webkit-animation: spin 2s linear infinite;
+        /* Safari */
+        animation: spin 2s linear infinite;
+      }
+
+      /* Safari */
+      @-webkit-keyframes spin {
+        0% {
+          -webkit-transform: rotate(0deg);
+        }
+
+        100% {
+          -webkit-transform: rotate(360deg);
+        }
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+
+        100% {
+          transform: rotate(360deg);
+        }
+      }
     </style>
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script
@@ -106,6 +137,15 @@
       crossorigin="anonymous"
     ></script>
     <script>
+      var all_data = {};
+
+
+      window.onbeforeunload = closingCode;
+      function closingCode() {
+        clearInterval();
+        return null;
+      }
+
       function removeItem(array, item) {
         for (var i in array) {
           if (array[i] == item) {
@@ -114,6 +154,14 @@
           }
         }
       }
+      window.setInterval(function () {
+        $.getJSON(window.parent.location.origin + "/updatefeed", function (
+          data
+        ) {
+          all_data = data;
+          filter(rankUp, all_data);
+        });
+      }, 600000);
       let regions = ["NA", "Brazil", "EU", "LAN"];
       var NA_select = true;
       var EU_select = true;
@@ -228,9 +276,9 @@
         }
         if ($("#all").hasClass("filterButton2") == false && rank === 0) {
           console.log("here");
-          filter(-1);
+          filter(-1, all_data);
         } else {
-          filter(rank);
+          filter(rank, all_data);
         }
       }
       $(document).ready(function () {
@@ -248,7 +296,8 @@
         $("#bronze").toggleClass("filterButton2");
       });
 
-      var all_data = JSON.parse(`{{ data | safe }}`);
+      //var all_data = JSON.parse(`{{ data | safe }}`);
+      //console.log(window.parent.location.origin);
       //all_data = all_data.split(",");
       function NA_Button() {
         if (NA_select == true) {
@@ -296,7 +345,18 @@
         $("#LAN").toggleClass("filterButton2");
       }
       $("#matches").hide();
-      function filter(rankUp) {
+
+      /*$.ajax({
+        url: window.parent.location.origin + "/updatefeed",
+        async: false,
+        dataType: 'json',
+        success: function(data) {
+            console.log(data.Issues);
+            all_data = data.Issues;
+        }
+      });
+      console.log(all_data);*/
+      function filter(rankUp, all_data) {
         $("#matches").hide();
         var html_string = "";
         if (rankUp == -1) {
@@ -323,43 +383,55 @@
         $("#matches").fadeIn();
       }
       $(document).ready(function () {
-        filter(0);
+        $(".hold").hide();
+        $(".loader").show();
+        $.getJSON(window.parent.location.origin + "/updatefeed", function (
+          data
+        ) {
+          filter(0, data);
+          all_data = data;
+          $(".loader").fadeOut();
+          $(".hold").fadeIn();
+        });
       });
     </script>
   </head>
   <body>
-    <button id="NA" class="filterButton" onclick="NA_Button();">NA</button>
-    <button id="EU" class="filterButton" onclick="EU_Button();">EU</button>
-    <button id="LAN" class="filterButton" onclick="LAN_Button();">LAN</button>
-    <button id="Brazil" class="filterButton" onclick="Brazil_Button();">
-      Brazil</button
-    ><br />
-    <button id="all" onclick="toggleRanks(0);" class="filterButton">
-      All Ranks
-    </button>
-    <button id="bronze" class="filterButton" onclick="toggleRanks(1);">
-      Bronze+
-    </button>
-    <button id="silver" class="filterButton" onclick="toggleRanks(6);">
-      Silver+
-    </button>
-    <button id="gold" class="filterButton" onclick="toggleRanks(11);">
-      Gold+
-    </button>
-    <button id="plat" class="filterButton" onclick="toggleRanks(16);">
-      Platinum+
-    </button>
-    <button id="diamond" class="filterButton" onclick="toggleRanks(21);">
-      Diamond+
-    </button>
-    <button id="master" class="filterButton" onclick="toggleRanks(26);">
-      Master+
-    </button>
-    <button id="gm" class="filterButton" onclick="toggleRanks(27);">
-      Grandmaster+
-    </button>
-    <center>
-      <div id="matches"></div>
-    </center>
+    <div class="loader"></div>
+    <div class="hold">
+      <button id="NA" class="filterButton" onclick="NA_Button();">NA</button>
+      <button id="EU" class="filterButton" onclick="EU_Button();">EU</button>
+      <button id="LAN" class="filterButton" onclick="LAN_Button();">LAN</button>
+      <button id="Brazil" class="filterButton" onclick="Brazil_Button();">
+        Brazil</button
+      ><br />
+      <button id="all" onclick="toggleRanks(0);" class="filterButton">
+        All Ranks
+      </button>
+      <button id="bronze" class="filterButton" onclick="toggleRanks(1);">
+        Bronze+
+      </button>
+      <button id="silver" class="filterButton" onclick="toggleRanks(6);">
+        Silver+
+      </button>
+      <button id="gold" class="filterButton" onclick="toggleRanks(11);">
+        Gold+
+      </button>
+      <button id="plat" class="filterButton" onclick="toggleRanks(16);">
+        Platinum+
+      </button>
+      <button id="diamond" class="filterButton" onclick="toggleRanks(21);">
+        Diamond+
+      </button>
+      <button id="master" class="filterButton" onclick="toggleRanks(26);">
+        Master+
+      </button>
+      <button id="gm" class="filterButton" onclick="toggleRanks(27);">
+        Grandmaster+
+      </button>
+      <center>
+        <div id="matches"></div>
+      </center>
+    </div>
   </body>
 </html>

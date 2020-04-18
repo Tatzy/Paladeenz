@@ -123,12 +123,12 @@ class User(UserMixin, db.Model):
 
 SERVER_IP = requests.get("https://api.ipify.org?format=json").json()['ip']
 @app.route("/", methods=['GET'])
-#@limiter.limit("15/hour")
 @limiter.exempt
 def search():
     return render_template('index.html')
 
 @app.route("/logout")
+@limiter.exempt
 def logout():
     logout_user()
     return redirect(url_for('search'))
@@ -141,8 +141,7 @@ def redir():
     return redirect("https://docs.google.com/spreadsheets/d/1YgshfIDPZikBA7-1L5dIA2pm0ouXsNJ54dgEUp0a7KM/edit?usp=sharing")
 
 @app.route("/player", methods=['GET'])
-#@limiter.limit("5/hour")
-@limiter.exempt
+@limiter.limit(RECENTMATCHES_RATE_LIMIT)
 def recent_matches():
     if 'recentmatches' in request.args:
         player_name = request.args['recentmatches']
@@ -170,8 +169,7 @@ def about():
     return render_template("about.html", data=data)
 
 @app.route("/live", methods=['GET'])
-@limiter.limit("15/hour")
-@limiter.exempt
+@limiter.limit(LIVEMATCH_RATE_LIMIT)
 def livematch():
     if 'livematch' in request.args:
         player_name = request.args['livematch']
@@ -203,37 +201,40 @@ def livematch():
                 return jsonify(game_info)
 
 
-@app.route("/test", methods=['GET'])
-@limiter.exempt
-def test():
-    global MATCHFEED_LIMIT
-    MATCHFEED_LIMIT = "0/hour"
-    return ""
+# @app.route("/test", methods=['GET'])
+# @limiter.exempt
+# def test():
+#     global MATCHFEED_LIMIT
+#     MATCHFEED_LIMIT = "0/hour"
+#     return ""
 
 @app.route("/matchfeed", methods=['GET'])
 @limiter.limit(MATCHFEED_LIMIT)
-@limiter.exempt
 def matchfeed():
+    return render_template("matchfeed.html")
+
+
+@app.route("/updatefeed", methods = ['GET'])
+@limiter.limit(MATCHFEED_LIMIT)
+def send_new_data():
     s = api.api.PaladinsSession(dev_id,dev_key)
     utc = arrow.utcnow()
-    #local = utc.to('US/Eastern')
     date = utc.format('YYYYMMDD')
     match_return_list = []
     time = utc
     time = time.format('H,mm')
     time = time.split(",")[0] + "," + str((int(time.split(",")[1]) - (int(time.split(",")[1])%10))%60)
-    print(time)
     all_matches = s._make_request("getmatchidsbyqueue", ["486",str(date),"-1"])
-    all_matches = all_matches[::-1] 
+
+     
     if all_matches != []:
+        all_matches = all_matches[::-1]
         matches_length = min(len(all_matches),30)
-        #print(matches_length)
         id_string = ""
         match_details = {}
         for i in range(0, matches_length):
             if i % 10 == 9:
                 id_string += all_matches[i]['Match']
-                #print(id_string)
                 batch_results = s._make_request("getmatchdetailsbatch", [id_string])
                 for item in batch_results:
                     if item['Match'] not in match_details.keys():
@@ -250,33 +251,29 @@ def matchfeed():
                 entry_time = match_details[match][i]['Entry_Datetime']
                 region = match_details[match][i]['Region']
             avg_rank = int(avg_rank/10)
-            #print(entry_time)
-            #arrowtime = arrow.get('04/18/2020 03:29:12', 'MM/DD/YYYY HH:mm:ss')
             arrowtime = arrow.get(str(entry_time), 'M/DD/YYYY h:mm:ss A')
-            #print(arrowtime.format("HH:mm"))
             k = utc - arrowtime
             if region == "Latin America North":
                 region = "LAN"
             match_return_list.append({"region":region ,"average_rank_img" : of.parse_rank(avg_rank), "average_rank" : of.parse_rank_name(avg_rank), "time":str((k.seconds//60)%60)+ " minutes ago...", "avg_rank" : avg_rank})
-    #print(match_return_list)
+
     utc = arrow.utcnow()
     local = utc.to('US/Eastern')
     dt_string = local.format('MM/DD/YYYY HH:mm')
     f = open("searches.log", 'a')
     f.write("MATCHFEED," + dt_string + "," + "ALL" +"\n")
-    return render_template("matchfeed.html", data = json.dumps(match_return_list))
+    return json.dumps(match_return_list)
 
 
-@app.route("/analysis", methods=['GET'])
-@limiter.exempt
-def analysis():
-    s = api.api.PaladinsSession(dev_id,dev_key)
-    champ_names = []
-    all_champions = s._make_request('getchampions', ['1'])
-    #print(all_champions)
-    for item in all_champions:
-        champ_names.append(item['Name'])
-    return render_template("analysis.html", c_names=champ_names)
+# @app.route("/analysis", methods=['GET'])
+# @limiter.exempt
+# def analysis():
+#     s = api.api.PaladinsSession(dev_id,dev_key)
+#     champ_names = []
+#     all_champions = s._make_request('getchampions', ['1'])
+#     for item in all_champions:
+#         champ_names.append(item['Name'])
+#     return render_template("analysis.html", c_names=champ_names)
 
 
 if __name__ == "__main__":
