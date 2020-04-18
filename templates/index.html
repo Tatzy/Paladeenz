@@ -316,7 +316,7 @@
           if (data[k1][0].status == 1) {
             var matches_table = "";
             console.log(vals);
-            vals.forEach(function (match) {
+            vals.reverse().forEach(function (match) {
               matches_table += "<div class=\"ms\"><table><tr><td>";
               data[match].forEach(function (player) {
                 if (player.TaskForce == '1') {
@@ -594,7 +594,7 @@
   <ul>
     <li><a href="#" onclick="load_home();">Home</a></li>
     <li><a href="{{ url_for('about') }}" title="">About</a></li>
-    <li><a href="#contact" title="feature unavailable">News*</a></li>
+    <li><a href="{{ url_for('matchfeed') }}" title="">Match Feed</a></li>
     <li><a href="{{ url_for('admin') }}" title="">Admin</a></li>
     <li style="float:right"><a class="active" href="https://discord.gg/t325G2u"><i class="fab fa-discord"></i></a></li>
   </ul>

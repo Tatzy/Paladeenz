@@ -312,7 +312,7 @@
           NA_select = true;
           regions.push("NA");
         }
-        filter(Rank_Selection);
+        filter(Rank_Selection, all_data);
         console.log(this);
         $("#NA").toggleClass("filterButton2");
       }
@@ -324,7 +324,7 @@
           EU_select = true;
           regions.push("EU");
         }
-        filter(Rank_Selection);
+        filter(Rank_Selection, all_data);
         $("#EU").toggleClass("filterButton2");
       }
       function Brazil_Button() {
@@ -335,7 +335,7 @@
           Brazil_select = true;
           regions.push("Brazil");
         }
-        filter(Rank_Selection);
+        filter(Rank_Selection, all_data);
         $("#Brazil").toggleClass("filterButton2");
       }
       function LAN_Button() {
@@ -346,7 +346,7 @@
           LAN_select = true;
           regions.push("LAN");
         }
-        filter(Rank_Selection);
+        filter(Rank_Selection, all_data);
         $("#LAN").toggleClass("filterButton2");
       }
       $("#matches").hide();
