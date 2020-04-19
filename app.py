@@ -51,6 +51,8 @@ LIVEMATCH_RATE_LIMIT = "15/hr"
 RECENTMATCHES_RATE_LIMIT = "5/hr"
 MATCHFEED_LIMIT = "10/hr"
 
+s = api.api.PaladinsSession(dev_id,dev_key)
+
 @app.before_request
 def make_session_permanent():
     session.permanent = True
@@ -142,10 +144,10 @@ def redir():
 
 @app.route("/player", methods=['GET'])
 @limiter.limit(RECENTMATCHES_RATE_LIMIT)
-def recent_matches():
+def recent_matches(s):
     if 'recentmatches' in request.args:
         player_name = request.args['recentmatches']
-        s = api.api.PaladinsSession(dev_id,dev_key)
+       # s = api.api.PaladinsSession(dev_id,dev_key)
         player_id_json = s._make_request("getplayeridbyname", [player_name])
         if player_id_json == []:
             return jsonify({"error_msg" : "Player not found", "status":0})
@@ -188,7 +190,7 @@ def livematch():
         #     else:
         #         iplist.pop(request.remote_addr)
         else:
-            s = api.api.PaladinsSession(dev_id,dev_key)
+            #s = api.api.PaladinsSession(dev_id,dev_key)
             player_status = of.get_player_status(player_name,s)
             if player_status == False or player_status == 5: #this is if the username does not exist
                 return jsonify(status = 5, error_msg="Player not found.")
@@ -201,12 +203,6 @@ def livematch():
                 return jsonify(game_info)
 
 
-# @app.route("/test", methods=['GET'])
-# @limiter.exempt
-# def test():
-#     global MATCHFEED_LIMIT
-#     MATCHFEED_LIMIT = "0/hour"
-#     return ""
 
 @app.route("/matchfeed", methods=['GET'])
 @limiter.limit(MATCHFEED_LIMIT)
@@ -217,13 +213,26 @@ def matchfeed():
 @app.route("/updatefeed", methods = ['GET'])
 @limiter.limit(MATCHFEED_LIMIT)
 def send_new_data():
-    s = api.api.PaladinsSession(dev_id,dev_key)
     utc = arrow.utcnow()
     date = utc.format('YYYYMMDD')
     match_return_list = []
     time = utc
     time = time.format('H,mm')
-    time = time.split(",")[0] + "," + str((int(time.split(",")[1]) - (int(time.split(",")[1])%10))%60)
+    #print(time.split(",")[1])
+    #print(str((int(time.split(",")[1]) - (int(time.split(",")[1])%10))%60))
+    b = str((int(time.split(",")[1]) - (int(time.split(",")[1])%10))%60)
+    a = time.split(",")[0]
+    if int(b) == 0:
+        b = "00"
+        a = str((int(a))%24)
+    else:
+        b = str(b)
+    if int(a) == 0:
+        a = "0"
+    else:
+        a = str(a)
+    time = str(a) + "," + str(b)
+
     all_matches = s._make_request("getmatchidsbyqueue", ["486",str(date),"-1"])
 
      
@@ -235,6 +244,7 @@ def send_new_data():
         for i in range(0, matches_length):
             if i % 10 == 9:
                 id_string += all_matches[i]['Match']
+                print(id_string)
                 batch_results = s._make_request("getmatchdetailsbatch", [id_string])
                 for item in batch_results:
                     if item['Match'] not in match_details.keys():
@@ -262,6 +272,7 @@ def send_new_data():
     dt_string = local.format('MM/DD/YYYY HH:mm')
     f = open("searches.log", 'a')
     f.write("MATCHFEED," + dt_string + "," + "ALL" +"\n")
+    print(match_return_list)
     return json.dumps(match_return_list)
 
 
