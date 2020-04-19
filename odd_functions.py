@@ -1,4 +1,5 @@
 import json
+import arrow
 
 # Status codes from 'getplayerstatus'
 # 0 - Offline
@@ -161,9 +162,10 @@ def player_live_lookup(match, session):
 
         return game_info
 
-def get_recent_matches(s, player_id):
+def get_recent_matches(s, player_id, t):
     match_history = s._make_request("getmatchhistory", [player_id])
     matches = []
+    t = -int(t)/60
     if match_history != []:
         i = 0
         for match in match_history:
@@ -175,7 +177,6 @@ def get_recent_matches(s, player_id):
     all_match_info = s._make_request("getmatchdetailsbatch", [",".join(matches)])
 
     all_match_array = {}
-
     for match in all_match_info:
 
         match['match_type'] = match['Map_Game'].split(" ")[0]
@@ -184,7 +185,11 @@ def get_recent_matches(s, player_id):
         match['item1_img'] = parse_item(match["Item_Active_1"])
         match['item2_img'] = parse_item(match["Item_Active_2"])
         match['item3_img'] = parse_item(match["Item_Active_3"])
-        match['item4_img'] = parse_item(match["Item_Active_4"])
+        new_time = arrow.get(match['Entry_Datetime'], "M/D/YYYY h:mm:ss A")
+        new_time = new_time.shift(hours = int(t))
+        new_time = new_time.format("MM/DD/YYYY h:mm A")
+        match['Entry_Datetime'] = new_time
+
         if match["playerName"] == "":
             match["playerName"] = '[PRIVATE PROFILE]'
         if match['Match'] not in all_match_array.keys():

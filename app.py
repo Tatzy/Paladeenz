@@ -51,7 +51,26 @@ LIVEMATCH_RATE_LIMIT = "15/hr"
 RECENTMATCHES_RATE_LIMIT = "5/hr"
 MATCHFEED_LIMIT = "10/hr"
 
+
+
 s = api.api.PaladinsSession(dev_id,dev_key)
+s2 = api.api.PaladinsSession(dev_id,dev_key)
+session_time = arrow.utcnow()
+session2_time = arrow.utcnow()
+
+def check_session():
+    global s
+    global session_time
+
+    if (arrow.utcnow()-session_time).seconds/60 >= 15:
+        s = api.api.PaladinsSession(dev_id,dev_key) 
+    
+def check_session2():
+    global s2
+    global session2_time
+
+    if (arrow.utcnow()-session_time).seconds/60 >= 15:
+        s2 = api.api.PaladinsSession(dev_id,dev_key) 
 
 @app.before_request
 def make_session_permanent():
@@ -144,23 +163,27 @@ def redir():
 
 @app.route("/player", methods=['GET'])
 @limiter.limit(RECENTMATCHES_RATE_LIMIT)
-def recent_matches(s):
+def recent_matches():
+
     if 'recentmatches' in request.args:
+        t = request.args.get('time')
+        if t == None:
+            t = int(0)
+        print(t)
         player_name = request.args['recentmatches']
-       # s = api.api.PaladinsSession(dev_id,dev_key)
+        utc = arrow.utcnow()
         player_id_json = s._make_request("getplayeridbyname", [player_name])
         if player_id_json == []:
             return jsonify({"error_msg" : "Player not found", "status":0})
         else:
             player_id = player_id_json[0]['player_id']
-            utc = arrow.utcnow()
             local = utc.to('US/Eastern')
             dt_string = local.format('MM/DD/YYYY HH:mm')
             f = open("searches.log", 'a')
             f.write("HISTORY," + dt_string + "," + player_name+"\n")
-            final_matches = of.get_recent_matches(s, player_id)
+            check_session()
+            final_matches = of.get_recent_matches(s, player_id, t)
             return jsonify(final_matches)
-
 
 @app.route("/about", methods = ['GET'])
 @limiter.exempt
@@ -191,6 +214,7 @@ def livematch():
         #         iplist.pop(request.remote_addr)
         else:
             #s = api.api.PaladinsSession(dev_id,dev_key)
+            check_session()
             player_status = of.get_player_status(player_name,s)
             if player_status == False or player_status == 5: #this is if the username does not exist
                 return jsonify(status = 5, error_msg="Player not found.")
@@ -209,10 +233,20 @@ def livematch():
 def matchfeed():
     return render_template("matchfeed.html")
 
+@app.route("/test", methods=['GET'])
+@limiter.exempt
+@login_required
+def test():
+    check_session()
+    #print(s)
+    a = s._make_request("getdataused", [])
+    #print(a)
+    return jsonify(a)
 
 @app.route("/updatefeed", methods = ['GET'])
 @limiter.limit(MATCHFEED_LIMIT)
 def send_new_data():
+    check_session2()
     utc = arrow.utcnow()
     date = utc.format('YYYYMMDD')
     match_return_list = []
@@ -233,7 +267,7 @@ def send_new_data():
         a = str(a)
     time = str(a) + "," + str(b)
 
-    all_matches = s._make_request("getmatchidsbyqueue", ["486",str(date),"-1"])
+    all_matches = s2._make_request("getmatchidsbyqueue", ["486",str(date),"-1"])
 
      
     if all_matches != []:
@@ -244,8 +278,8 @@ def send_new_data():
         for i in range(0, matches_length):
             if i % 10 == 9:
                 id_string += all_matches[i]['Match']
-                print(id_string)
-                batch_results = s._make_request("getmatchdetailsbatch", [id_string])
+                #print(id_string)
+                batch_results = s2._make_request("getmatchdetailsbatch", [id_string])
                 for item in batch_results:
                     if item['Match'] not in match_details.keys():
                         match_details[item['Match']] = []
@@ -272,20 +306,20 @@ def send_new_data():
     dt_string = local.format('MM/DD/YYYY HH:mm')
     f = open("searches.log", 'a')
     f.write("MATCHFEED," + dt_string + "," + "ALL" +"\n")
-    print(match_return_list)
+    #print(match_return_list)
     return json.dumps(match_return_list)
 
 
-# @app.route("/analysis", methods=['GET'])
-# @limiter.exempt
-# def analysis():
-#     s = api.api.PaladinsSession(dev_id,dev_key)
-#     champ_names = []
-#     all_champions = s._make_request('getchampions', ['1'])
-#     for item in all_champions:
-#         champ_names.append(item['Name'])
-#     return render_template("analysis.html", c_names=champ_names)
+@app.route("/analysis", methods=['GET'])
+@limiter.exempt
+def analysis():
+    s = api.api.PaladinsSession(dev_id,dev_key)
+    champ_names = []
+    all_champions = s._make_request('getchampions', ['1'])
+    for item in all_champions:
+        champ_names.append(item['Name'])
+    return render_template("analysis.html", c_names=champ_names)
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=False)

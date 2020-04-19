@@ -309,13 +309,13 @@
         $(".recentmatch").fadeOut();
         $(".tables").fadeOut();
         $(".loader").fadeIn();
-        call_url = window.location.href + "/player?recentmatches=" + player_name;
+        var nt = new Date();
+        call_url = window.location.href + "/player?recentmatches=" + player_name + "&time=" + nt.getTimezoneOffset();
         $.getJSON(call_url, function (data) {
           var vals = Object.keys(data);
           let k1 = vals[0]
           if (data[k1][0].status == 1) {
             var matches_table = "";
-            console.log(vals);
             vals.reverse().forEach(function (match) {
               matches_table += "<div class=\"ms\"><table><tr><td>";
               data[match].forEach(function (player) {
