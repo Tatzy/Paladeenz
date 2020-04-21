@@ -19,6 +19,7 @@ import pandas as pd
 from flask_session import Session
 from datetime import timedelta
 import api.api
+from livereload import Server
 
 
 class LoginForm(FlaskForm):
@@ -46,6 +47,7 @@ login_manager.init_app(app)
 login_manager.login_view = 'login'
 migrate = Migrate(app, db)
 COOKIE_DURATION = timedelta(hours = 4)
+app.config["DEBUG"] = True
 
 LIVEMATCH_RATE_LIMIT = "15/hr"
 RECENTMATCHES_RATE_LIMIT = "5/hr"
@@ -233,6 +235,11 @@ def livematch():
 def matchfeed():
     return render_template("matchfeed.html")
 
+@app.route("/header", methods = ['GET'])
+@limiter.exempt
+def load():
+    return render_template("testpage.html")
+
 @app.route("/test", methods=['GET'])
 @limiter.exempt
 @login_required
@@ -322,4 +329,6 @@ def analysis():
 
 
 if __name__ == "__main__":
-    app.run(debug=False)
+    # app.run(debug=False)
+    server = Server(app.wsgi_app)
+    server.serve(debug=True)
