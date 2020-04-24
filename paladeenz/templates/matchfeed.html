@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="refresh" content="600" />
+    <style>
+      .box {
+        position: relative;
+        margin-top: 20px;
+        width: 30%;
+        height: 90px;
+        background: #303233;
+        border-radius: 25px;
+        border-color: #18191a;
+        border-style: solid;
+        box-shadow: 0px 10px 5px black;
+      }
+      .boxtext {
+        text-align: center;
+        vertical-align: middle;
+        line-height: 90px;
+        font-family: Helvetica, Arial, sans-serif;
+        font-weight: bold;
+        color: #9c9c9c;
+        text-shadow: 0px 1px 3px #000;
+      }
+      .rank {
+        position: absolute;
+        top: 18px;
+        left: 10px;
+      }
+      body {
+        background: #303233;
+      }
+      .filterButton {
+        margin-top: 10px;
+        box-shadow: inset 0px 1px 0px 0px #303233;
+        background: linear-gradient(to bottom, #3b3b3b 5%, #303233 100%);
+        background-color: #3b3b3b;
+        border: 2px solid #000;
+        display: inline-block;
+        cursor: pointer;
+        color: #ffffff;
+        font-family: Arial;
+        font-size: 13px;
+        font-weight: bold;
+        padding: 10px 30px;
+        text-decoration: none;
+        outline: 0;
+      }
+      .filterButton:hover {
+        background: #000;
+        background-color: #303233;
+        outline: 0;
+      }
+      .filterButton:active {
+        position: relative;
+        top: 1px;
+        outline: 0;
+      }
+
+      .filterButton2 {
+        margin-top: 10px;
+        box-shadow: linear-gradient(to bottom, #3b3b3b 5%, #a3a3a3 100%);
+        background: #000;
+        background-color: #e0e0e0;
+        border: 2px solid #000;
+        display: inline-block;
+        cursor: pointer;
+        color: #ffffff;
+        font-family: Arial;
+        font-size: 13px;
+        font-weight: bold;
+        padding: 10px 30px;
+        text-decoration: none;
+        outline: 0;
+      }
+      .filterButton2:hover {
+        background: linear-gradient(to bottom, #3b3b3b 5%, #a3a3a3 100%);
+        background-color: #000;
+        outline: 0;
+      }
+      .filterButton2:active {
+        position: relative;
+        top: 1px;
+        outline: 0;
+      }
+      .loader {
+        position:absolute;
+        top: 30%;
+        right: 50%;
+        margin-top:-100px;
+        margin-right:-100px;
+        border: 5px solid #ffffff;
+        border-radius: 50%;
+        border-top: 5px solid #4f595f;
+        width: 200px;
+        height: 200px;
+        -webkit-animation: spin 2s linear infinite;
+        /* Safari */
+        animation: spin 2s linear infinite;
+      }
+
+      /* Safari */
+      @-webkit-keyframes spin {
+        0% {
+          -webkit-transform: rotate(0deg);
+        }
+
+        100% {
+          -webkit-transform: rotate(360deg);
+        }
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=UA-141137456-1"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "UA-141137456-1");
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script
+      src="https://code.jquery.com/ui/1.11.3/jquery-ui.js"
+      integrity="sha256-0vBSIAi/8FxkNOSKyPEfdGQzFDak1dlqFKBYqBp1yC4="
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      var all_data = {};
+
+
+      window.onbeforeunload = closingCode;
+      function closingCode() {
+        clearInterval();
+        return null;
+      }
+
+      function removeItem(array, item) {
+        for (var i in array) {
+          if (array[i] == item) {
+            array.splice(i, 1);
+            break;
+          }
+        }
+      }
+      window.setTimeout(function () {
+        $.getJSON(window.parent.location.origin + "/updatefeed", function (
+          data
+        ) {
+          all_data = data;
+          filter(rankUp, all_data);
+        });
+      }, 600000);
+      let regions = ["NA", "Brazil", "EU", "LAN"];
+      var NA_select = true;
+      var EU_select = true;
+      var Brazil_select = true;
+      var LAN_select = true;
+      var Rank_Selection = 0;
+      function imgpath(img) {
+        return "static/" + img;
+      }
+
+      function toggleRanks(rank) {
+        if (rank == 0) {
+          if ($("#all").hasClass("filterButton2")) {
+            $("#all").removeClass("filterButton2");
+            $("#silver").removeClass("filterButton2");
+            $("#gold").removeClass("filterButton2");
+            $("#plat").removeClass("filterButton2");
+            $("#diamond").removeClass("filterButton2");
+            $("#master").removeClass("filterButton2");
+            $("#gm").removeClass("filterButton2");
+            $("#bronze").removeClass("filterButton2");
+            Rank_Selection = -1;
+          } else {
+            $("#all").addClass("filterButton2");
+            $("#silver").addClass("filterButton2");
+            $("#gold").addClass("filterButton2");
+            $("#plat").addClass("filterButton2");
+            $("#diamond").addClass("filterButton2");
+            $("#master").addClass("filterButton2");
+            $("#gm").addClass("filterButton2");
+            $("#bronze").addClass("filterButton2");
+            Rank_Selection = 0;
+          }
+        }
+        if (rank == 1) {
+          $("#all").removeClass("filterButton2");
+          $("#silver").removeClass("filterButton2");
+          $("#gold").removeClass("filterButton2");
+          $("#plat").removeClass("filterButton2");
+          $("#diamond").removeClass("filterButton2");
+          $("#master").removeClass("filterButton2");
+          $("#gm").removeClass("filterButton2");
+          $("#bronze").addClass("filterButton2");
+          Rank_Selection = 1;
+        }
+        if (rank == 6) {
+          $("#all").removeClass("filterButton2");
+          $("#silver").addClass("filterButton2");
+          $("#gold").removeClass("filterButton2");
+          $("#plat").removeClass("filterButton2");
+          $("#diamond").removeClass("filterButton2");
+          $("#master").removeClass("filterButton2");
+          $("#gm").removeClass("filterButton2");
+          $("#bronze").removeClass("filterButton2");
+          Rank_Selection = 6;
+        }
+        if (rank == 11) {
+          $("#all").removeClass("filterButton2");
+          $("#silver").removeClass("filterButton2");
+          $("#gold").addClass("filterButton2");
+          $("#plat").removeClass("filterButton2");
+          $("#diamond").removeClass("filterButton2");
+          $("#master").removeClass("filterButton2");
+          $("#gm").removeClass("filterButton2");
+          $("#bronze").removeClass("filterButton2");
+          Rank_Selection = 11;
+        }
+        if (rank == 16) {
+          $("#all").removeClass("filterButton2");
+          $("#silver").removeClass("filterButton2");
+          $("#gold").removeClass("filterButton2");
+          $("#plat").addClass("filterButton2");
+          $("#diamond").removeClass("filterButton2");
+          $("#master").removeClass("filterButton2");
+          $("#gm").removeClass("filterButton2");
+          $("#bronze").removeClass("filterButton2");
+          Rank_Selection = 16;
+        }
+
+        if (rank == 21) {
+          $("#all").removeClass("filterButton2");
+          $("#silver").removeClass("filterButton2");
+          $("#gold").removeClass("filterButton2");
+          $("#plat").removeClass("filterButton2");
+          $("#diamond").addClass("filterButton2");
+          $("#master").removeClass("filterButton2");
+          $("#gm").removeClass("filterButton2");
+          $("#bronze").removeClass("filterButton2");
+          Rank_Selection = 21;
+        }
+        if (rank == 26) {
+          $("#all").removeClass("filterButton2");
+          $("#silver").removeClass("filterButton2");
+          $("#gold").removeClass("filterButton2");
+          $("#plat").removeClass("filterButton2");
+          $("#diamond").removeClass("filterButton2");
+          $("#master").addClass("filterButton2");
+          $("#gm").removeClass("filterButton2");
+          $("#bronze").removeClass("filterButton2");
+          Rank_Selection = 26;
+        }
+        if (rank == 27) {
+          $("#all").removeClass("filterButton2");
+          $("#silver").removeClass("filterButton2");
+          $("#gold").removeClass("filterButton2");
+          $("#plat").removeClass("filterButton2");
+          $("#diamond").removeClass("filterButton2");
+          $("#master").removeClass("filterButton2");
+          $("#gm").addClass("filterButton2");
+          $("#bronze").removeClass("filterButton2");
+          Rank_Selection = 27;
+        }
+        if ($("#all").hasClass("filterButton2") == false && rank === 0) {
+          console.log("here");
+          filter(-1, all_data);
+        } else {
+          filter(rank, all_data);
+        }
+      }
+      $(document).ready(function () {
+        $("#NA").toggleClass("filterButton2");
+        $("#Brazil").toggleClass("filterButton2");
+        $("#LAN").toggleClass("filterButton2");
+        $("#EU").toggleClass("filterButton2");
+        $("#all").addClass("filterButton2");
+        $("#silver").toggleClass("filterButton2");
+        $("#gold").toggleClass("filterButton2");
+        $("#plat").toggleClass("filterButton2");
+        $("#diamond").toggleClass("filterButton2");
+        $("#master").toggleClass("filterButton2");
+        $("#gm").toggleClass("filterButton2");
+        $("#bronze").toggleClass("filterButton2");
+      });
+
+      //var all_data = JSON.parse(`{{ data | safe }}`);
+      //console.log(window.parent.location.origin);
+      //all_data = all_data.split(",");
+      function NA_Button() {
+        if (NA_select == true) {
+          NA_select = false;
+          removeItem(regions, "NA");
+        } else {
+          NA_select = true;
+          regions.push("NA");
+        }
+        filter(Rank_Selection, all_data);
+        console.log(this);
+        $("#NA").toggleClass("filterButton2");
+      }
+      function EU_Button() {
+        if (EU_select == true) {
+          EU_select = false;
+          removeItem(regions, "EU");
+        } else {
+          EU_select = true;
+          regions.push("EU");
+        }
+        filter(Rank_Selection, all_data);
+        $("#EU").toggleClass("filterButton2");
+      }
+      function Brazil_Button() {
+        if (Brazil_select == true) {
+          Brazil_select = false;
+          removeItem(regions, "Brazil");
+        } else {
+          Brazil_select = true;
+          regions.push("Brazil");
+        }
+        filter(Rank_Selection, all_data);
+        $("#Brazil").toggleClass("filterButton2");
+      }
+      function LAN_Button() {
+        if (LAN_select == true) {
+          LAN_select = false;
+          removeItem(regions, "LAN");
+        } else {
+          LAN_select = true;
+          regions.push("LAN");
+        }
+        filter(Rank_Selection, all_data);
+        $("#LAN").toggleClass("filterButton2");
+      }
+      $("#matches").hide();
+
+      /*$.ajax({
+        url: window.parent.location.origin + "/updatefeed",
+        async: false,
+        dataType: 'json',
+        success: function(data) {
+            console.log(data.Issues);
+            all_data = data.Issues;
+        }
+      });
+      console.log(all_data);*/
+      function filter(rankUp, all_data) {
+        $("#matches").hide();
+        var html_string = "";
+        if (rankUp == -1) {
+          html_string = "";
+          $("#matches").html(html_string);
+        } else {
+          all_data.forEach(function (game) {
+            //console.log(regions.includes(game.region));
+            if (game.avg_rank >= rankUp && regions.includes(game.region)) {
+              html_string +=
+                '<div class = "box"><div class = "rank"><img src = "static/' +
+                game.average_rank_img +
+                '" title = "' +
+                game.average_rank +
+                '" height="60px"></div><div class = "boxtext">[' +
+                game.region +
+                "] " +
+                game.time +
+                "</div></div>";
+            }
+          });
+        }
+        $("#matches").html(html_string);
+        $("#matches").fadeIn();
+      }
+      $(document).ready(function () {
+        $(".hold").hide();
+        $(".loader").show();
+        $.getJSON(window.parent.location.origin + "/updatefeed", function (
+          data
+        ) {
+          filter(0, data);
+          all_data = data;
+          $(".loader").fadeOut();
+          $(".hold").fadeIn();
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <div class="loader"></div>
+    <div class="hold">
+      <button id="NA" class="filterButton" onclick="NA_Button();">NA</button>
+      <button id="EU" class="filterButton" onclick="EU_Button();">EU</button>
+      <button id="LAN" class="filterButton" onclick="LAN_Button();">LAN</button>
+      <button id="Brazil" class="filterButton" onclick="Brazil_Button();">
+        Brazil</button
+      ><br />
+      <button id="all" onclick="toggleRanks(0);" class="filterButton">
+        All Ranks
+      </button>
+      <button id="bronze" class="filterButton" onclick="toggleRanks(1);">
+        Bronze+
+      </button>
+      <button id="silver" class="filterButton" onclick="toggleRanks(6);">
+        Silver+
+      </button>
+      <button id="gold" class="filterButton" onclick="toggleRanks(11);">
+        Gold+
+      </button>
+      <button id="plat" class="filterButton" onclick="toggleRanks(16);">
+        Platinum+
+      </button>
+      <button id="diamond" class="filterButton" onclick="toggleRanks(21);">
+        Diamond+
+      </button>
+      <button id="master" class="filterButton" onclick="toggleRanks(26);">
+        Master+
+      </button>
+      <button id="gm" class="filterButton" onclick="toggleRanks(27);">
+        Grandmaster+
+      </button>
+      <center>
+        <div id="matches"></div>
+      </center>
+    </div>
+  </body>
+</html>

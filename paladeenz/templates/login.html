@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      .submitBtn {
+        /*box-shadow:inset 0px 1px 0px 0px #000000;*/
+        background: linear-gradient(to bottom, #666666 5%, #303233 100%);
+        background-color: #666666;
+        border-radius: 3px;
+        border: 1px solid #000000;
+        display: inline-block;
+        cursor: pointer;
+        color: #ffffff;
+        font-family: Arial;
+        font-size: 13px;
+        font-weight: bold;
+        padding: 6px 24px;
+        text-decoration: none;
+        text-shadow: 0px 1px 0px #000000;
+        font-family: Helvetica, Arial, sans-serif;
+        font-weight: bold;
+        color: #222;
+        text-shadow: 0px 1px 3px #555;
+      }
+      .submitBtn:hover {
+        background: linear-gradient(to bottom, #303233 5%, #666666 100%);
+        background-color: #303233;
+      }
+      .submitBtn:active {
+        position: relative;
+        top: 1px;
+      }
+      p {
+        font-family: Arial, Helvetica, sans-serif;
+      }
+      .inputBox {
+        width: 20%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+        background-color: #c2c4c4;
+        font-weight: bold;
+      }
+      input[type="text"] {
+        color: #757575;
+        font-weight: bold;
+      }
+      body {
+        background-color: #303233;
+      }
+      h1 {
+        font-family: Helvetica, Arial, sans-serif;
+        font-weight: bold;
+        color: #222;
+        text-shadow: 0px 1px 3px #555;
+      }
+    </style>
+  </head>
+  <body>
+    <center>
+      {% block content %}
+      <h1>Paladeenz Admin Portal</h1>
+      <form action="" method="post">
+        {{ form.hidden_tag() }}
+        <p>
+          {{ form.username(size=30, autocomplete="off", class = "inputBox",
+          placeholder = "Username") }}<br />
+        </p>
+
+        <p>
+          {{ form.password(size=30, autocomplete="off", placeholder="Password",
+          class = "inputBox") }}<br />
+        </p>
+        <p>{{ form.submit(class="submitBtn", value="Login") }}</p>
+      </form>
+      {% endblock %}
+    </center>
+  </body>
+</html>
