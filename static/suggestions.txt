@@ -1,1 +1,0 @@
-Make use of our statistics to allow users to generate graphs about their champions and ranks.
