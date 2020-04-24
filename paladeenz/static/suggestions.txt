@@ -1,0 +1,2 @@
+Make use of our statistics to allow users to generate graphs about their champions and ranks.
+Building out our matchfeed feature to include more information

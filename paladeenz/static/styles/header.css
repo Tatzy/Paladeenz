@@ -1,0 +1,189 @@
+:root {
+
+
+    --main-bg-color-dark: #4D4D4D;
+    --button-gradient-1-dark: #252525;
+    --button-gradient-2-dark: #4F4F4F;
+    --navbar-color-dark: #4F4F4F;
+    --topbar-color-dark: #252525;
+    --logo-text-color-dark: #151515;
+
+
+    --main-bg-color-light: #fff;
+    --button-gradient-1-light: #252525;
+    --button-gradient-2-light: #4F4F4F;
+    --navbar-color-light: rgb(226, 2, 2);
+    --topbar-color-light: #ccc;
+    --logo-text-color-light: #151515;
+
+
+
+
+    --main-bg-color: #4D4D4D;
+    --button-gradient-1: #252525;
+    --button-gradient-2: #4F4F4F;
+    --navbar-color: #4F4F4F;
+    --topbar-color: #252525;
+    --logo-text-color: #151515;
+    --logo-url: url("https://i.imgur.com/S250gyq.png");
+    --discord-button: url("https://i.imgur.com/DIIpNaB.png");
+    --discord-button2: url("https://i.imgur.com/Um0i1iq.png");
+    --generic-toggle-orange: linear-gradient(to bottom, #e88120 5%, #ffae21 100%);
+    --generic-toggle-blue: linear-gradient(to bottom, #203ee8 5%, #122178 100%)
+
+}
+
+.switch {
+    position: absolute;
+    float: right;
+    left: 2px;
+    display: inline-block;
+    width: 60px;
+    height: 40px;
+    top: 1px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--topbar-color);
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 33px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked+.slider {
+    background-color: #ffae21;
+}
+
+input:focus+.slider {
+    box-shadow: 0 0 1px var(--button-gradient-1);
+}
+
+input:checked+.slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+}
+
+.logo {
+    background-image: var(--logo-url);
+    background-size: 100px 100px;
+    margin-left: 1px;
+    width: 100px;
+    height: 100px;
+}
+
+.topbar {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    width: 100%;
+    height: 100px;
+    background-color: var(--topbar-color);
+}
+
+.logotext {
+    position: absolute;
+    top: 4px;
+    right: 20px;
+    font-family: 'Ubuntu', sans-serif;
+    font-weight: bold;
+    font-size: 100px;
+    color: var(--logo-text-color);
+    text-shadow: 2px 2px 2px var(--navbar-color);
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    background-clip: text;
+}
+
+.navbar {
+    top: 100px;
+    right: 0px;
+    position: absolute;
+    width: 100%;
+    height: 42px;
+    background-color: var(--navbar-color);
+}
+
+.discordbutton {
+    position: relative;
+    float: left;
+    left: 60px;
+    top: 2px;
+    height: 40px;
+    width: 40px;
+    background-image: var(--discord-button);
+    background-size: 40px 40px;
+}
+
+.discordbutton:hover {
+    position: relative;
+    float: left;
+    background-color: transparent;
+    height: 40px;
+    width: 40px;
+    background-image: var(--discord-button2);
+    background-size: 40px 40px;
+}
+
+.linkbutton {
+    -webkit-touch-callout: none; /* iOS Safari */
+-webkit-user-select: none; /* Safari */
+-khtml-user-select: none; /* Konqueror HTML */
+-moz-user-select: none; /* Firefox */
+-ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none;
+    position: relative;
+    float: left;
+    left: 63px;
+    background: var(--button-gradient-1); 
+    background-color: var(--button-gradient-1);
+    height: 40px;
+    width: 100px;
+    font-family: 'Righteous', cursive;
+    font-family: 'Didact Gothic', sans-serif;
+    text-align: center;
+    line-height: 40px;
+    color: #fff;
+    border: 1px solid var(--main-bg-color);
+}
+
+.linkbutton:hover {
+    background: linear-gradient(to bottom, var(--button-gradient-1) 5%, var(--button-gradient-2) 100%);
+    height: 40px;
+    width: 100px;
+    text-align: center;
+    line-height: 40px;
+    color: #fff;
+}
+
+a {
+    color: inherit;
+}
+
+
+body {
+    background-color: var(--main-bg-color);
+}
