@@ -15,6 +15,13 @@ class User(UserMixin, db.Model):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
+
+class Player(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    player_id = db.Column(db.String(30))
+    player_rank = db.Column(db.Integer)
+    
+
 class Match(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     match_id = db.Column(db.String(30))
